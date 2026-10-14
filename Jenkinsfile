@@ -14,10 +14,41 @@ pipeline {
          stage ("Instalar dependencias do projeto") {
             steps {
                 dir('hub-de-leitura-integrado') {
-                    bat 'npm install'
-                    bat 'npm start'
+                    bat '''
+                     call npm install
+                     start /B npm start
+                     '''
                 }
             }
+        }
+
+        stage ("Clonar o projeto de teste") {
+            steps {
+                bat 'if exist hub-de-leitura-teste-ui2 rmdir /s /q hub-de-leitura-teste-ui2'
+                bat 'git clone https://github.com/Cassiana-Lima/hub-de-leitura-teste-ui2.git'
+            }
+        }
+
+        stage ("Instalar dependencias dos projetos de teste") {
+            steps {
+                dir('hub-de-leitura-teste-ui2') {
+                    bat 'call npm install'
+                }
+            }
+        }
+
+        stage ("Executar os testes automatizados") {
+            steps {
+                dir ('hub-de-leitura-teste-ui2') {
+                    bat 'call npm test'                
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            bat 'taskkill /F /IM node.exe || exit 0'
         }
     }
  }
