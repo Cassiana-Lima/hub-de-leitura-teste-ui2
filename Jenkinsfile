@@ -6,7 +6,6 @@ pipeline {
 
         stage ("Clonar o Hub de Leitura Integrado") {
             steps {
-                if exist hub-de-leitura-integrado ( rmdir /s /q hub-de-leitura-integrado )
                 bat 'git clone https://github.com/Cassiana-Lima/hub-de-leitura-integrado.git'
             }
         }
