@@ -13,7 +13,7 @@ pipeline {
 
          stage ("Instalar dependencias do projeto") {
             steps {
-                dir('hub-de-leitura-integrado.git') {
+                dir('hub-de-leitura-integrado') {
                     bat '''
                      call npm install
                      start /B npm start
@@ -49,7 +49,7 @@ pipeline {
     post {
         always {
             dir ('hub-de-leitura-teste-ui2') {
-                archiveArtifacts: artifacts 'cypress/screenshots/**/*.*, cypress/videos/**/*.*', allowEmptyArchive:true
+                archiveArtifacts artifacts: 'cypress/screenshots/**/*.*, cypress/videos/**/*.*', allowEmptyArchive:true
             }
             
             bat 'taskkill /F /IM node.exe || exit 0'
