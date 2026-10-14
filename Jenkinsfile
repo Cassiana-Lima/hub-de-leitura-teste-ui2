@@ -49,8 +49,9 @@ pipeline {
     post {
         always {
             dir ('hub-de-leitura-teste-ui2') {
-                archiveArtifacts artifacts: 'cypress/screenshots/**/*.*, cypress/videos/**/*.*', allowEmptyArchive:true
-            }   allure includeProperties: false, jdk: '', results: [[path: 'allure-report']]
+                archiveArtifacts artifacts: 'cypress/screenshots/**/*.*, cypress/videos/**/*.*', allowEmptyArchive: true
+                 allure includeProperties: false, jdk: '', results: [[path: 'allure-report']]
+            } 
             
             bat 'taskkill /F /IM node.exe || exit 0'
         }
