@@ -7,13 +7,13 @@ pipeline {
         stage ("Clonar o Hub de Leitura Integrado") {
             steps {
                 bat 'if exist hub-de-leitura-integrado rmdir /s /q hub-de-leitura-integrado'
-                bat 'git clone https://github.com/Cassiana-Lima/hub-de-leitura-integrado.git'
+                bat 'git clone --depth 1 https://github.com/Cassiana-Lima/hub-de-leitura-integrado.git'
             }
         }
 
          stage ("Instalar dependencias do projeto") {
             steps {
-                dir('hub-de-leitura-integrado') {
+                dir('hub-de-leitura-integrado.git') {
                     bat '''
                      call npm install
                      start /B npm start
@@ -25,7 +25,7 @@ pipeline {
         stage ("Clonar o projeto de teste") {
             steps {
                 bat 'if exist hub-de-leitura-teste-ui2 rmdir /s /q hub-de-leitura-teste-ui2'
-                bat 'git clone https://github.com/Cassiana-Lima/hub-de-leitura-teste-ui2.git'
+                bat 'git clone --depth 1 https://github.com/Cassiana-Lima/hub-de-leitura-teste-ui2.git'
             }
         }
 
@@ -48,6 +48,7 @@ pipeline {
 
     post {
         always {
+            archiveArtifacts: artifacts 'cypress/screenshots/**/*.*, cypress/videos/**/*.*', allowEmptyArchive:true
             bat 'taskkill /F /IM node.exe || exit 0'
         }
     }
